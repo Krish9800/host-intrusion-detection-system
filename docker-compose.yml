@@ -1,0 +1,29 @@
+services:
+  hids-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hids-control-plane
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+    volumes:
+      - hids_data:/var/lib/hids:rw
+      - /etc:/host/etc:ro
+      - /var/log:/host/var/log:ro
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      - HIDS_AGENT_ID=hids-prod-node-01
+      - HIDS_ENVIRONMENT=production
+      - HIDS_LOG_LEVEL=INFO
+      - HIDS_DB_PATH=/var/lib/hids/hids.db
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+
+volumes:
+  hids_data:
+    driver: local
