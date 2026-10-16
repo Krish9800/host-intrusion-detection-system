@@ -22,8 +22,7 @@ jobs:
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install ruff mypy bandit pytest pytest-cov httpx
-          pip install -e .
+          pip install -e ".[dev]"
 
       - name: Code Formatting Check (Ruff)
         run: |
@@ -43,4 +42,4 @@ jobs:
 
       - name: Test Suite & Coverage (Pytest >= 90%)
         run: |
-          pytest --cov=src/hids --cov-report=term-missing --cov-fail-under=90 tests/
+          pytest --cov=hids --cov-report=term-missing --cov-fail-under=90 tests/
